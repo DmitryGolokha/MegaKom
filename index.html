@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МегаКом</title>
+  <style>
+    :root {
+      --primary: #0f4c81;
+      --accent: #ff6b00;
+      --dark: #1a1a1a;
+      --light: #f5f7fa;
+      --text: #333;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; 
+      color: var(--text); 
+      line-height: 1.6; 
+      background: var(--light); 
+      overflow-x: hidden;
+      /* Важно: чтобы пыльца не обрезалась по краям */
+      margin: 0; 
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    section { padding: 80px 0; }
+    h2 { font-size: 2.2rem; margin-bottom: 40px; text-align: center; }
+    .btn { display: inline-block; background: var(--primary); color: #fff; padding: 14px 30px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.3s; }
+    .btn:hover { background: #0a3a63; }
+
+    /* --- ГЛАВНЫЙ ЭКРАН (HERO) --- */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden; /* Обрезаем всё, что вылезает за пределы экрана */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      will-change: transform;
+    }
+
+    /* ИСПРАВЛЕНИЕ: Фон только здесь, у родителя фона нет */
+    .hero-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url('https://opis-cdn.tinkoffjournal.ru/b-secrets/2023_08_biografiya_-boris-nuraliev-1.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+      will-change: background-position; 
+    }
+
+    /* Слой для параллакса по курсору (полупрозрачный градиент) */
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      /* Градиент стал чуть прозрачнее, чтобы пыльцу было видно лучше */
+      background: linear-gradient(rgba(15, 76, 129, 0.5), rgba(0, 0, 0, 0.6));
+      z-index: 2;
+      pointer-events: none; 
+      will-change: transform;
+      backdrop-filter: blur(5px); /* Лёгкое размытие под слоем для глубины */
+    }
+
+    .hero-content {
+      position: relative; z-index: 3; text-align: center; max-width: 800px; padding: 20px; 
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    }
+    .hero h1 { font-size: 3.2rem; margin-bottom: 16px; line-height: 1.1; }
+    .hero p { font-size: 1.25rem; margin-bottom: 32px; }
+
+    /* --- ПАДАЮЩИЕ ЗНАЧКИ (1С) --- */
+    .falling-icon {
+      position: fixed;
+      top: -50px;
+      width: 32px;
+      height: 32px;
+      z-index: 0; /* Позади фона */
+      animation: fall linear infinite;
+      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3));
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; } 
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
+    }
+
+    /* Стили самой иконки "1С" */
+    .icon-1c-shape {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #fff;
+      position: relative;
+      box-sizing: border-box;
+      padding: 4px;
+      display: grid;
+      place-items: center;
+    }
+    .icon-1c-digit {
+      font-weight: 900;
+      font-size: 18px;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .icon-1c-letter {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--accent);
+      transform: scaleY(1.1);
+      letter-spacing: 1px;
+    }
+
+    /* Секции */
+    .about, .services, .advantages, .contacts { background: #fff; }
+    .advantages { background: var(--light); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .card { background: #fff; border-radius: 8px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: 1px solid #eee; }
+    .card h3 { color: var(--primary); margin-bottom: 12px; }
+
+    footer { background: var(--dark); color: #ccc; padding: 40px 0; text-align: center; font-size: 0.95rem; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Параллакс-экран -->
+  <header class="hero" id="heroSection">
+    <!-- Фон (скролл-параллакс) -->
+    <div class="hero-bg" id="bgLayer"></div>
+    
+    <!-- Слой (курсор-параллакс + градиент) -->
+    <div class="hero-overlay" id="overlayLayer"></div>
+
+    <!-- Контент -->
+    <div class="hero-content">
+      <h1>МегаКом</h1>
+      <a href="#contacts" class="btn">Заказать консультацию</a>
+    </div>
+  </header>
+
+  <!-- О нас -->
+  <section class="about">
+    <div class="container">
+      <h2>О компании</h2>
+      <div style="max-width: 800px; margin: 0 auto;">
+        <p></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Услуги -->
+  <section class="services">
+    <div class="container">
+      <h2>Наши услуги</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Сопровождение 1С</h3>
+          <p></p>
+        </div>
+        <div class="card">
+          <h3>Интеграция 1С с сайтом</h3>
+          <p></p>
+        </div>
+        <div class="card">
+          <h3>Интеграция с CRM</h3>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Преимущества -->
+  <section class="advantages">
+    <div class="container">
+      <h2>Почему выбирают нас</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Опыт в 1С</h3>
+          <p></p>
+        </div>
+        <div class="card">
+          <h3>Прозрачность работ</h3>
+          <p></p>
+        </div>
+        <div class="card">
+          <h3>Поддержка</h3>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section id="contacts" class="contacts">
+    <div class="container">
+      <h2>Свяжитесь с нами</h2>
+      <div style="max-width: 500px; margin: 0 auto;">
+        <p><strong>Телефон:</strong> +7 (4712) 77-31-40</p>
+        <p><strong>Email:</strong> client@megacom.ru</p>
+        <p><strong>Адрес:</strong> г. Курск, ул. Красная Армия, д. 23 А</p>
+        <br>
+        <form style="display:flex; flex-direction:column; gap:12px;">
+          <input type="text" placeholder="Ваше имя" style="padding:12px; border:1px solid #ddd; border-radius:6px;">
+          <input type="email" placeholder="Email" style="padding:12px; border:1px solid #ddd; border-radius:6px;">
+          <textarea rows="4" placeholder="Сообщение" style="padding:12px; border:1px solid #ddd; border-radius:6px;"></textarea>
+          <button type="submit" class="btn" style="cursor:pointer;">Отправить заявку</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 МегаКом. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script>
+    // --- 1. ПАРАЛЛАКС ПО КУРСОРУ ---
+    const hero = document.getElementById('heroSection');
+    const overlay = document.getElementById('overlayLayer');
+    
+    const sensitivity = 25; // Сила эффекта (чем больше, тем сильнее сдвиг)
+
+    hero.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+
+      const moveX = (x - 0.5) * sensitivity;
+      const moveY = (y - 0.5) * sensitivity;
+
+      overlay.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    });
+
+    // --- 2. ПАРАЛЛАКС ПО СКРОЛЛУ ---
+    const bgLayer = document.getElementById('bgLayer');
+
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.pageYOffset;
+      bgLayer.style.backgroundPositionY = `${scrollPosition * 0.5}px`;
+    });
+
+    // --- 3. ЭФФЕКТ ПЫЛЬЦЫ (СЛЕД ЗА КУРСОМ) ---
+    const pollenContainer = document.createElement('div');
+    pollenContainer.id = 'pollen-container';
+    document.body.appendChild(pollenContainer);
+
+    let pollenTimeout;
+    
+    document.addEventListener('mousemove', (e) => {
+      // Очищаем старые частицы, чтобы не забивать память
+      clearTimeout(pollenTimeout);
+      pollenTimeout = setTimeout(() => {
+        const particles = document.querySelectorAll('.pollen-particle');
+        particles.forEach(p => p.remove());
+      }, 1000);
+
+      createPollen(e.clientX, e.clientY);
+    });
+
+    function createPollen(x, y) {
+      const particleCount = 5; // Сколько частиц за один шаг мыши
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement('div');
+        p.className = 'pollen-particle';
+        
+        // Случайный размер
+        const size = Math.random() * 6 + 2; 
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        
+        // Позиция со смещением (чтобы не было одной точки)
+        const offsetX = (Math.random() - 0.5) * 20;
+        const offsetY = (Math.random() - 0.5) * 20;
+        
+        p.style.left = `${x + offsetX}px`;
+        p.style.top = `${y + offsetY}px`;
+        
+        // Цвет: берем основной цвет или случайный оттенок синего/белого
+        const colors = ['#0f4c81', '#fff', '#e0e7ff'];
+        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Прозрачность
+        p.style.opacity = Math.random();
+        
+        pollenContainer.appendChild(p);
+        
+        // Анимация исчезновения и падения
+        setTimeout(() => {
+          p.style.transition = 'all 0.8s ease-out';
+          p.style.transform = 'translateY(20px) scale(0)';
+          p.style.opacity = '0';
+          
+          setTimeout(() => p.remove(), 800);
+        }, 50);
+      }
+    }
+
+    // Добавляем стили для пыльцы динамически, чтобы они были в конце CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      #pollen-container {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; /* Чтобы частицы не мешали кликам */
+        z-index: 9999;
+        overflow: hidden;
+      }
+      .pollen-particle {
+        position: absolute;
+        border-radius: 50%;
+        will-change: transform, opacity;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // --- 4. ГЕНЕРАЦИЯ ПАДАЮЩИХ ЗНАЧКОВ ---
+    function createFallingIcons() {
+      const count = 15; // Количество значков на экране
+      for (let i = 0; i < count; i++) {
+        const icon = document.createElement('div');
+        icon.className = 'falling-icon';
+        
+        // Случайная позиция по горизонтали
+        const randomX = Math.random() * 100; 
+        icon.style.left = `${randomX}%`;
+        
+        // Случайная длительность анимации (чтобы падали не синхронно)
+        const duration = 3 + Math.random() * 4; // от 3 до 7 секунд
+        icon.style.animationDuration = `${duration}s`;
+        
+        // Случайный размер
+        const size = 24 + Math.random() * 24;
+        icon.style.width = `${size}px`;
+        icon.style.height = `${size}px`;
+
+        // HTML иконки (CSS стили выше сделают её красивой)
+        icon.innerHTML = `
+          <div class="icon-1c-shape">
+            <span class="icon-1c-digit">1</span>
+            <span class="icon-1c-letter">C</span>
+          </div>
+        `;
+        
+        document.body.appendChild(icon);
+      }
+    }
+
+    // Запускаем генерацию при загрузке
+    createFallingIcons();
+  </script>
+</body>
+</html>
