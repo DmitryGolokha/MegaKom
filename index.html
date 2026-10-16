@@ -1,35 +1,574 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>МегаКом</title>
-  <style>
-    :root {
-      --primary: #0f4c81;
-      --accent: #ff6b00;
-      --dark: #1a1a1a;
-      --light: #f5f7fa;
-      --text: #333;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мега-Ком — 1С:Франчайзи</title>
+    <style>
+        :root {
+            --primary-red: #d32f2f;
+            --dark-text: #333333;
+            --gray-text: #666666;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--dark-text);
+            background-color: var(--white);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid #eeeeee;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 30px;
+            width: auto;
+        }
+
+        .company-info {
+            font-size: 12px;
+            color: var(--gray-text);
+            line-height: 1.4;
+        }
+
+        .contacts-area {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .phone-numbers {
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--dark-text);
+        }
+
+        .header-actions a {
+            color: var(--gray-text);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 13px;
+            display: inline-block;
+        }
+
+        .header-actions a:hover {
+            color: var(--primary-red);
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--primary-red);
+        }
+
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            font-weight: 700;
+            color: var(--white);
+            padding: 16px 22px;
+            text-decoration: none;
+            cursor: pointer;
+            position: relative;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            background-color: #b71c1c;
+        }
+
+        .has-dropdown::after {
+            content: "▼";
+            font-size: 8px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        /* Slider Styles */
+        .hero-section {
+            padding: 60px 0;
+            width: 100%;
+            position: relative;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            margin: 0; 
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background-color: #f9f9f9;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 400%; /* 4 слайда по 25% */
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slider-slide {
+            min-width: 25%;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            height: 500px; /* Фиксированная высота */
+        }
+
+        .slider-content {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            text-align: left; 
+        }
+
+        .slider-content h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark-text);
+            line-height: 1.2;
+        }
+
+        .slider-content p {
+            font-size: 16px;
+            color: var(--gray-text);
+            line-height: 1.6;
+        }
+
+        .slider-image-container {
+            flex: 1;
+            min-width: 400px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            /* ВАЖНО: минимальная высота, чтобы блок не схлопывался без картинки */
+            min-height: 300px; 
+        }
+
+        .slider-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        }
+
+        /* Navigation Dots */
+        .slider-dots {
+            text-align: center;
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            background-color: #cccccc;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .dot.active {
+            background-color: var(--primary-red);
+            transform: scale(1.2);
+            border-color: var(--primary-red);
+        }
+
+        /* Navigation Arrows */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            color: var(--dark-text);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .slider-btn:hover {
+            background-color: var(--primary-red);
+            color: var(--white);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-btn-prev {
+            left: 20px;
+        }
+
+        .slider-btn-next {
+            right: 20px;
+        }
+
+        /* Products Section */
+        .products-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+
+        .section-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-text);
+            text-align: center;
+            grid-column: 2 / 3;
+        }
+
+        .view-all {
+            color: var(--primary-red);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            grid-column: 3 / 4;
+            white-space: nowrap;
+            justify-self: end;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .product-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .product-img {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .product-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark-text);
+            line-height: 1.4;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slider-slide {
+                flex-direction: column-reverse;
+                height: auto;
+                padding: 60px 40px;
+            }
+
+            .slider-content {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .slider-image-container {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 30px;
+            }
+
+            .slider-image {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header, .hero-section {
+                padding: 15px 20px;
+            }
+
+            .contacts-area {
+                text-align: left;
+                margin-top: 15px;
+                width: 100%;
+            }
+
+            .header-actions a {
+                margin-left: 10px;
+            }
+
+            .section-header {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .section-title {
+                grid-column: auto;
+                width: 100%;
+            }
+
+            .view-all {
+                grid-column: auto;
+                justify-self: auto;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .product-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Контакты -->
-  <section id="contacts" class="contacts">
-    <div class="container">
-      <h2></h2>
-      <div style="max-width: 500px; margin: 0 auto;">
-        <p><strong>Телефон:</strong> +7 (4712) 77-31-40, 73-55-66</p>
-        <p><strong>Email:</strong> client@megkom.ru</p>
-        <p><strong>Адрес:</strong> г. Курск, ул. Красной Армии, д. 23</p>
+    <header>
+        <div class="logo-area">
+            <img src="https://megkom.ru/include/logo2.png" alt="Мега-Ком" class="logo-img">
+            <div class="company-info">
+                1С:Франчайзи.<br>
+                Аккредитованная IT компания
+            </div>
+        </div>
+        <div class="contacts-area">
+            <div class="phone-numbers">
+                +7 (4712) 77-31-40, 73-55-66<br>
+                8 (800) 250-02-67
+            </div>
+            <div class="header-actions">
+                <a href="#">Заказать звонок</a>
+                <a href="#">Поиск</a>
+                <a href="#">Войти</a>
+            </div>
+        </div>
+    </header>
 
-        <p style="margin-top: 10px;">
-          <a href="https://max.ru/u/f9LHodD0cOIYd-CftRjodoeo7qLa3Q3zwh3Tny5lK8fvW2lS4SICqEAx0Mo" target="_blank" rel="noopener"><img src="https://i.pinimg.com/originals/f7/57/c4/f757c48380c7a4763cfd035793f8c921.png" alt="Мы в MAX" width="36" height="36" style="vertical-align: middle; border: none; border-radius: 8px;" /></a><a href="https://max.ru/u/f9LHodD0cOIYd-CftRjodoeo7qLa3Q3zwh3Tny5lK8fvW2lS4SICqEAx0Mo" target="_blank" rel="noopener" style="margin-left: 8px; vertical-align: middle; text-decoration: none; color: var(--primary); font-weight: bold;">Мы в MAX</a>
-        </p>
-      </div>
-    </div>
-  </section>
+    <nav>
+        <ul class="nav-list">
+            <li><a href="#" class="nav-item">О компании</a></li>
+            <li><a href="#" class="nav-item has-dropdown">Программы 1С, товары</a></li>
+            <li><a href="#" class="nav-item">Внедрение и поддержка</a></li>
+            <li><a href="#" class="nav-item">Отзывы</a></li>
+            <li><a href="#" class="nav-item">Статьи</a></li>
+            <li><a href="#" class="nav-item">Инструкции</a></li>
+            <li><a href="#" class="nav-item">Контакты</a></li>
+        </ul>
+    </nav>
 
+    <section class="hero-section">
+        <div class="slider-wrapper">
+            <!-- Кнопки навигации -->
+            <button class="slider-btn slider-btn-prev" id="prevBtn" aria-label="Предыдущий слайд">&#10094;</button>
+            <button class="slider-btn slider-btn-next" id="nextBtn" aria-label="Следующий слайд">&#10095;</button>
+
+            <!-- Слайдер -->
+            <div class="slider-track" id="sliderTrack">
+                <!-- Слайд 1: Маркировка -->
+                <div class="slider-slide">
+                    <div class="slider-content">
+                        <h2>Маркировка товаров</h2>
+                        <p>Регистрация в системе «Честный знак» и получение кодов маркировки. Передача товара с подписанием электронного УПД. Сканирование кода 2D‑сканером при продаже.</p>
+                    </div>
+                    <div class="slider-image-container">
+                        <img src="https://online.business.ru/wp-content/uploads/2025/09/mark_main.png" alt="2D сканер для маркировки" class="slider-image">
+                    </div>
+                </div>
+
+                <!-- Слайд 2: Удаленный доступ -->
+                <div class="slider-slide">
+                    <div class="slider-content">
+                        <h2>Удаленный доступ к 1С через Интернет</h2>
+                        <p>Облачное решение 1С для Вашего комфорта. Возможность удаленной работы 24/7. Дистанционное ведение бухгалтерского и налогового учета.</p>
+                    </div>
+                    <div class="slider-image-container">
+                        <!-- ИСПРАВЛЕНО: blob заменено на raw -->
+                        <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" alt="Удаленный доступ" class="slider-image">
+                    </div>
+                </div>
+
+                <!-- Слайд 3: Консалтинг/Внедрение -->
+                <div class="slider-slide">
+                    <div class="slider-content">
+                        <h2>Внедрение и консалтинг</h2>
+                        <p>Профессиональная настройка программ 1С под специфику вашего бизнеса. Обучение сотрудников и сопровождение проекта на всех этапах.</p>
+                    </div>
+                    <div class="slider-image-container">
+                        <!-- ИСПРАВЛЕНО: добавлен raw и убран лишний параметр, если он ломает ссылку -->
+                        <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-management-consulting-15401487.gif" alt="Консалтинг" class="slider-image">
+                    </div>
+                </div>
+
+                <!-- Слайд 4: Документы/УПД -->
+                <div class="slider-slide">
+                    <div class="slider-content">
+                        <h2>Электронный документооборот</h2>
+                        <p>Работа с электронными УПД, счетами-фактурами и другими документами. Автоматизация обмена с контрагентами и контролирующими органами.</p>
+                    </div>
+                    <div class="slider-image-container">
+                        <!-- ВАЖНО: замените 'path/to/document.png' на реальный путь к вашему файлу -->
+                        <img src="https://github.com/DmitryGolokha/MegaKom/blob/main/free-animated-icon-document-6172540.gif" alt="Документы" class="slider-image">
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Точки навигации -->
+            <div class="slider-dots" id="sliderDots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+                <span class="dot" data-index="3"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section">
+        <div class="section-header">
+            <h2 class="section-title">Программные продукты</h2>
+            <a href="#" class="view-all">Весь каталог</a>
+        </div>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://megkom.ru/upload/resize_cache/iblock/75c/450_450_0/w3p55ztje2uy671j5xs2j2i5xvef5rq3.jpg" alt="1С:Бухгалтерия">
+                </div>
+                <div class="product-title">Бухгалтерский и налоговый учет</div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://megkom.ru/upload/resize_cache/iblock/6f5/450_450_0/9r1ecntvuh0x8fum5x45h3jfd85up0nb.jpg" alt="1С:ЗУП">
+                </div>
+                <div class="product-title">Зарплата и управление персоналом</div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://megkom.ru/upload/resize_cache/iblock/d48/450_450_0/mmzybwac9o2214hyng2w549y266vwu9a.jpg" alt="1С:Комплексная автоматизация">
+                </div>
+                <div class="product-title">Производство и комплексный учет</div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://megkom.ru/upload/medialibrary/ec3/f59llxtw8igbqussxu8tq6zszamn46x5.jpg" alt="1С:Розница">
+                </div>
+                <div class="product-title">Торговый и складской учет</div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://megkom.ru/upload/resize_cache/iblock/8d0/450_450_0/ywcvaa3x1s2uvkw8arpghf9drlih4e5q.jpg" alt="Отраслевые решения 1С">
+                </div>
+                <div class="product-title">Отраслевые решения</div>
+            </div>
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://megkom.ru/upload/resize_cache/iblock/f46/450_450_0/v2so73kuhn1ipgt44rcflq60dy2mnxe4.png" alt="1С в облаке">
+                </div>
+                <div class="product-title">Программы 1С в облаке</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const track = document.getElementById('sliderTrack');
+        const slides = Array.from(track.children);
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+
+        function updateSlider() {
+            const offset = -currentIndex * (100 / totalSlides);
+            track.style.transform = `translateX(\${offset}%)`;
+            
+            // Обновление точек
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        function goToSlide(index) {
+            currentIndex = (index + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                goToSlide(index);
+            });
+        });
+
+        // Автопрокрутка каждые 6 секунд
+        let autoPlay = setInterval(() => goToSlide(currentIndex + 1), 6000);
+
+        // Пауза при наведении
+        track.addEventListener('mouseenter', () => clearInterval(autoPlay));
+        track.addEventListener('mouseleave', () => autoPlay = setInterval(() => goToSlide(currentIndex + 1), 6000));
+    </script>
 </body>
 </html>
+
