@@ -117,11 +117,10 @@
             vertical-align: middle;
         }
 
-        /* Slider Styles */
+        /* ===== Slider ===== */
         .hero-section {
             padding: 60px 20px;
             width: 100%;
-            position: relative;
         }
 
         .slider-wrapper {
@@ -143,24 +142,21 @@
 
         .slider-slide {
             min-width: 100%;
-            padding: 40px;
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
             align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
             gap: 40px;
-            height: 500px;
+            padding: 40px;
+            /* Высота определяется контентом — картинка больше не обрезается */
         }
 
         .slider-content {
-            flex: 1;
-            min-width: 300px;
-            max-width: 500px;
+            min-width: 0;
             text-align: left;
         }
 
         .slider-content h2 {
-            font-size: 36px;
+            font-size: 34px;
             font-weight: 700;
             margin-bottom: 20px;
             color: var(--dark-text);
@@ -173,19 +169,19 @@
             line-height: 1.6;
         }
 
+        /* Картинка на всю ширину своей колонки */
         .slider-image-container {
-            flex: 1;
-            min-width: 300px;
+            min-width: 0;
+            width: 100%;
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
-            min-height: 300px;
         }
 
         .slider-image {
             width: 100%;
-            max-width: 500px;
-            height: auto;
+            height: 100%;
+            max-height: 460px;
             object-fit: contain;
             display: block;
             filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
@@ -196,8 +192,6 @@
             text-align: center;
             margin-top: 20px;
             padding: 0 20px;
-            position: relative;
-            z-index: 5;
         }
 
         .dot {
@@ -319,22 +313,15 @@
         /* Responsive */
         @media (max-width: 1024px) {
             .slider-slide {
-                flex-direction: column-reverse;
-                height: auto;
-                padding: 60px 40px;
+                grid-template-columns: 1fr;
+                padding: 40px 30px;
+                gap: 30px;
             }
             .slider-content {
-                max-width: 100%;
                 text-align: center;
             }
-            .slider-image-container {
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 30px;
-            }
             .slider-image {
-                max-width: 100%;
-                width: 100%;
+                max-height: 360px;
             }
         }
 
@@ -363,6 +350,9 @@
             .product-card {
                 flex-direction: column;
                 text-align: center;
+            }
+            .slider-content h2 {
+                font-size: 26px;
             }
             .slider-btn {
                 width: 40px;
@@ -527,7 +517,6 @@
             const AUTOPLAY_DELAY = 6000;
 
             function render() {
-                // Каждый слайд занимает 100% ширины обёртки
                 track.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
                 dots.forEach((dot, i) => {
                     dot.classList.toggle('active', i === currentIndex);
@@ -554,7 +543,6 @@
                 }
             }
 
-            // Кнопки
             prevBtn.addEventListener('click', () => {
                 prevSlide();
                 startAutoPlay();
@@ -564,7 +552,6 @@
                 startAutoPlay();
             });
 
-            // Точки
             dots.forEach(dot => {
                 dot.addEventListener('click', () => {
                     const index = parseInt(dot.dataset.index, 10);
@@ -573,14 +560,12 @@
                 });
             });
 
-            // Пауза при наведении / касании
             const wrapper = track.parentElement;
             wrapper.addEventListener('mouseenter', stopAutoPlay);
             wrapper.addEventListener('mouseleave', startAutoPlay);
             wrapper.addEventListener('touchstart', stopAutoPlay, { passive: true });
             wrapper.addEventListener('touchend', startAutoPlay, { passive: true });
 
-            // Старт
             render();
             startAutoPlay();
         })();
