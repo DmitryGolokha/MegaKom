@@ -7,6 +7,7 @@
     <style>
         :root {
             --primary-red: #d32f2f;
+            --primary-red-dark: #b71c1c;
             --dark-text: #333333;
             --gray-text: #666666;
             --white: #ffffff;
@@ -34,6 +35,8 @@
             border-bottom: 1px solid #eeeeee;
             max-width: 1200px;
             margin: 0 auto;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .logo-area {
@@ -83,11 +86,12 @@
 
         .nav-list {
             list-style: none;
-            margin: 0;
+            margin: 0 auto;
             padding: 0;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+            max-width: 1200px;
         }
 
         .nav-item {
@@ -99,10 +103,11 @@
             position: relative;
             font-size: 14px;
             text-transform: uppercase;
+            display: block;
         }
 
         .nav-item:hover {
-            background-color: #b71c1c;
+            background-color: var(--primary-red-dark);
         }
 
         .has-dropdown::after {
@@ -114,7 +119,7 @@
 
         /* Slider Styles */
         .hero-section {
-            padding: 60px 0;
+            padding: 60px 20px;
             width: 100%;
             position: relative;
         }
@@ -122,35 +127,36 @@
         .slider-wrapper {
             position: relative;
             width: 100%;
-            margin: 0; 
+            max-width: 1200px;
+            margin: 0 auto;
             overflow: hidden;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             background-color: #f9f9f9;
         }
 
         .slider-track {
             display: flex;
-            width: 400%; /* 4 слайда по 25% */
+            width: 100%;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .slider-slide {
-            min-width: 25%;
+            min-width: 100%;
             padding: 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 40px;
-            height: 500px; /* Фиксированная высота */
+            height: 500px;
         }
 
         .slider-content {
             flex: 1;
             min-width: 300px;
             max-width: 500px;
-            text-align: left; 
+            text-align: left;
         }
 
         .slider-content h2 {
@@ -169,21 +175,20 @@
 
         .slider-image-container {
             flex: 1;
-            min-width: 400px;
+            min-width: 300px;
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            /* ВАЖНО: минимальная высота, чтобы блок не схлопывался без картинки */
-            min-height: 300px; 
+            min-height: 300px;
         }
 
         .slider-image {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             height: auto;
             object-fit: contain;
             display: block;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
         }
 
         /* Navigation Dots */
@@ -191,6 +196,8 @@
             text-align: center;
             margin-top: 20px;
             padding: 0 20px;
+            position: relative;
+            z-index: 5;
         }
 
         .dot {
@@ -228,7 +235,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
         }
 
@@ -238,13 +245,8 @@
             transform: translateY(-50%) scale(1.1);
         }
 
-        .slider-btn-prev {
-            left: 20px;
-        }
-
-        .slider-btn-next {
-            right: 20px;
-        }
+        .slider-btn-prev { left: 20px; }
+        .slider-btn-next { right: 20px; }
 
         /* Products Section */
         .products-section {
@@ -321,18 +323,15 @@
                 height: auto;
                 padding: 60px 40px;
             }
-
             .slider-content {
                 max-width: 100%;
                 text-align: center;
             }
-
             .slider-image-container {
                 width: 100%;
                 justify-content: center;
                 margin-bottom: 30px;
             }
-
             .slider-image {
                 max-width: 100%;
                 width: 100%;
@@ -340,45 +339,38 @@
         }
 
         @media (max-width: 768px) {
-            header, .hero-section {
+            header {
                 padding: 15px 20px;
             }
-
             .contacts-area {
                 text-align: left;
-                margin-top: 15px;
                 width: 100%;
             }
-
             .header-actions a {
-                margin-left: 10px;
+                margin-left: 0;
+                margin-right: 15px;
             }
-
             .section-header {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 gap: 15px;
             }
-            
-            .section-title {
-                grid-column: auto;
-                width: 100%;
-            }
-
-            .view-all {
-                grid-column: auto;
-                justify-self: auto;
-            }
-
+            .section-title { width: 100%; }
             .products-grid {
                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
-
             .product-card {
                 flex-direction: column;
                 text-align: center;
             }
+            .slider-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .slider-btn-prev { left: 10px; }
+            .slider-btn-next { right: 10px; }
         }
     </style>
 </head>
@@ -418,13 +410,11 @@
 
     <section class="hero-section">
         <div class="slider-wrapper">
-            <!-- Кнопки навигации -->
             <button class="slider-btn slider-btn-prev" id="prevBtn" aria-label="Предыдущий слайд">&#10094;</button>
             <button class="slider-btn slider-btn-next" id="nextBtn" aria-label="Следующий слайд">&#10095;</button>
 
-            <!-- Слайдер -->
             <div class="slider-track" id="sliderTrack">
-                <!-- Слайд 1: Маркировка -->
+                <!-- Слайд 1 -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Маркировка товаров</h2>
@@ -435,45 +425,40 @@
                     </div>
                 </div>
 
-                <!-- Слайд 2: Удаленный доступ -->
+                <!-- Слайд 2 -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Удаленный доступ к 1С через Интернет</h2>
                         <p>Облачное решение 1С для Вашего комфорта. Возможность удаленной работы 24/7. Дистанционное ведение бухгалтерского и налогового учета.</p>
                     </div>
                     <div class="slider-image-container">
-                        <!-- ИСПРАВЛЕНО: blob заменено на raw -->
                         <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" alt="Удаленный доступ" class="slider-image">
                     </div>
                 </div>
 
-                <!-- Слайд 3: Консалтинг/Внедрение -->
+                <!-- Слайд 3 -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Внедрение и консалтинг</h2>
                         <p>Профессиональная настройка программ 1С под специфику вашего бизнеса. Обучение сотрудников и сопровождение проекта на всех этапах.</p>
                     </div>
                     <div class="slider-image-container">
-                        <!-- ИСПРАВЛЕНО: добавлен raw и убран лишний параметр, если он ломает ссылку -->
                         <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-management-consulting-15401487.gif" alt="Консалтинг" class="slider-image">
                     </div>
                 </div>
 
-                <!-- Слайд 4: Документы/УПД -->
+                <!-- Слайд 4 -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Электронный документооборот</h2>
                         <p>Работа с электронными УПД, счетами-фактурами и другими документами. Автоматизация обмена с контрагентами и контролирующими органами.</p>
                     </div>
                     <div class="slider-image-container">
-                        <!-- ВАЖНО: замените 'path/to/document.png' на реальный путь к вашему файлу -->
-                        <img src="https://github.com/DmitryGolokha/MegaKom/blob/main/free-animated-icon-document-6172540.gif" alt="Документы" class="slider-image">
+                        <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-document-6172540.gif" alt="Документы" class="slider-image">
                     </div>
                 </div>
             </div>
 
-
-            <!-- Точки навигации -->
             <div class="slider-dots" id="sliderDots">
                 <span class="dot active" data-index="0"></span>
                 <span class="dot" data-index="1"></span>
@@ -529,46 +514,76 @@
     </section>
 
     <script>
-        const track = document.getElementById('sliderTrack');
-        const slides = Array.from(track.children);
-        const dots = document.querySelectorAll('.dot');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        
-        let currentIndex = 0;
-        const totalSlides = slides.length;
+        (function () {
+            const track = document.getElementById('sliderTrack');
+            const slides = Array.from(track.children);
+            const dots = Array.from(document.querySelectorAll('.dot'));
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const totalSlides = slides.length;
 
-        function updateSlider() {
-            const offset = -currentIndex * (100 / totalSlides);
-            track.style.transform = `translateX(\${offset}%)`;
-            
-            // Обновление точек
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[currentIndex].classList.add('active');
-        }
+            let currentIndex = 0;
+            let autoPlayId = null;
+            const AUTOPLAY_DELAY = 6000;
 
-        function goToSlide(index) {
-            currentIndex = (index + totalSlides) % totalSlides;
-            updateSlider();
-        }
+            function render() {
+                // Каждый слайд занимает 100% ширины обёртки
+                track.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
 
-        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
-        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+            function goToSlide(index) {
+                currentIndex = (index + totalSlides) % totalSlides;
+                render();
+            }
 
-        dots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                const index = parseInt(e.target.getAttribute('data-index'));
-                goToSlide(index);
+            function nextSlide() { goToSlide(currentIndex + 1); }
+            function prevSlide() { goToSlide(currentIndex - 1); }
+
+            function startAutoPlay() {
+                stopAutoPlay();
+                autoPlayId = setInterval(nextSlide, AUTOPLAY_DELAY);
+            }
+
+            function stopAutoPlay() {
+                if (autoPlayId !== null) {
+                    clearInterval(autoPlayId);
+                    autoPlayId = null;
+                }
+            }
+
+            // Кнопки
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                startAutoPlay();
             });
-        });
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                startAutoPlay();
+            });
 
-        // Автопрокрутка каждые 6 секунд
-        let autoPlay = setInterval(() => goToSlide(currentIndex + 1), 6000);
+            // Точки
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const index = parseInt(dot.dataset.index, 10);
+                    goToSlide(index);
+                    startAutoPlay();
+                });
+            });
 
-        // Пауза при наведении
-        track.addEventListener('mouseenter', () => clearInterval(autoPlay));
-        track.addEventListener('mouseleave', () => autoPlay = setInterval(() => goToSlide(currentIndex + 1), 6000));
+            // Пауза при наведении / касании
+            const wrapper = track.parentElement;
+            wrapper.addEventListener('mouseenter', stopAutoPlay);
+            wrapper.addEventListener('mouseleave', startAutoPlay);
+            wrapper.addEventListener('touchstart', stopAutoPlay, { passive: true });
+            wrapper.addEventListener('touchend', startAutoPlay, { passive: true });
+
+            // Старт
+            render();
+            startAutoPlay();
+        })();
     </script>
 </body>
 </html>
-
