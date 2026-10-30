@@ -208,13 +208,13 @@
             filter: brightness(1.1) contrast(1.1);
         }
 
-        /* ===== Новые стили для перекраски GIF ===== */
-        .slider-image.recolor-red {
-            filter: hue-rotate(180deg) saturate(5);
+        /* ===== Точная перекраска через SVG ===== */
+        .slider-image.recolor-brand-red {
+            filter: url(#brand-red-filter);
         }
 
-        .slider-image.recolor-yellow {
-            filter: hue-rotate(-120deg) saturate(5);
+        .slider-image.recolor-brand-yellow {
+            filter: url(#brand-yellow-filter);
         }
 
         .dual-recolor {
@@ -243,7 +243,6 @@
         }
         /* ========================================= */
 
-        /* Увеличен масштаб (1.35), чтобы визуально "обрезать" пустые поля картинки */
         @keyframes floatImage {
             0%   { transform: translateY(0)     rotate(0deg)    scale(1.35); }
             25%  { transform: translateY(-6px)  rotate(-1deg)   scale(1.36); }
@@ -452,6 +451,31 @@
     </style>
 </head>
 <body>
+    <!-- 
+      Идеальные математические матрицы для замены бирюзового цвета
+      на точный #d32f2f (красный) и #FFD700 (желтый) без потери белого фона и черных контуров.
+    -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <filter id="brand-red-filter" color-interpolation-filters="sRGB">
+                <feColorMatrix type="matrix" values="
+                    0.085  0.915  0      0 0
+                    1.115 -0.100 -0.015  0 0
+                    1.115 -0.100 -0.015  0 0
+                    0      0      0      1 0
+                "/>
+            </filter>
+            <filter id="brand-yellow-filter" color-interpolation-filters="sRGB">
+                <feColorMatrix type="matrix" values="
+                   -0.190  1.190  0      0 0
+                    0.064  0.936  0      0 0
+                    1.397 -0.397  0      0 0
+                    0      0      0      1 0
+                "/>
+            </filter>
+        </defs>
+    </svg>
+
     <header>
         <div class="logo-area">
             <img src="https://megkom.ru/include/logo2.png" alt="Мега-Ком" class="logo-img">
@@ -491,7 +515,7 @@
             <button class="slider-btn slider-btn-next" id="nextBtn" aria-label="Следующий слайд">&#10095;</button>
 
             <div class="slider-track" id="sliderTrack">
-                <!-- Слайд 1: Маркировка -->
+                <!-- Слайд 1: Исходные цвета -->
                 <div class="slider-slide is-active">
                     <div class="slider-content">
                         <h2>Маркировка товаров</h2>
@@ -506,7 +530,7 @@
                     </div>
                 </div>
 
-                <!-- Слайд 2: Удаленный доступ (Красный + Желтый) -->
+                <!-- Слайд 2: Удаленный доступ -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Удаленный доступ к 1С через Интернет</h2>
@@ -516,13 +540,13 @@
                         <img 
                             src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" 
                             alt="Удаленный доступ" 
-                            class="slider-image recolor-red clip-left"
+                            class="slider-image recolor-brand-red clip-left"
                         >
                         <img 
                             src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" 
                             alt="" 
                             aria-hidden="true" 
-                            class="slider-image recolor-yellow clip-right overlay"
+                            class="slider-image recolor-brand-yellow clip-right overlay"
                         >
                     </div>
                 </div>
@@ -534,11 +558,15 @@
                         <p>Внедряем и сопровождаем программы 1С. Работаем более 20 лет, опыт автоматизации различных направлений деятельности и более 200 сертификатов от фирмы 1С.</p>
                     </div>
                     <div class="slider-image-container">
-                        <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-management-consulting-15401487.gif" alt="Консалтинг" class="slider-image">
+                        <img 
+                            src="https://github.com/DmitryGolokha/MegaKom/raw/main/Vnedrenie.gif" 
+                            alt="Консалтинг" 
+                            class="slider-image recolor-brand-red"
+                        >
                     </div>
                 </div>
 
-                <!-- Слайд 4: Электронный документооборот (Красный) -->
+                <!-- Слайд 4 -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Отчётность одним кликом</h2>
@@ -548,7 +576,7 @@
                         <img 
                             src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-document-6172540.gif" 
                             alt="Документы" 
-                            class="slider-image recolor-red"
+                            class="slider-image recolor-brand-red"
                         >
                     </div>
                 </div>
