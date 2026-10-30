@@ -213,8 +213,8 @@
             filter: url(#brand-red-filter);
         }
 
-        .slider-image.recolor-brand-yellow {
-            filter: url(#brand-yellow-filter);
+        .slider-image.recolor-brand-gray {
+            filter: url(#brand-gray-filter);
         }
 
         .dual-recolor {
@@ -452,8 +452,10 @@
 </head>
 <body>
     <!-- 
-      Идеальные математические матрицы для замены бирюзового цвета
-      на точный #d32f2f (красный) и #FFD700 (желтый) без потери белого фона и черных контуров.
+      Математические матрицы для замены бирюзового цвета.
+      brand-red-filter: заменяет на #d32f2f (красный).
+      brand-gray-filter: заменяет на серый с точно такой же светимостью, как у красного.
+      Белый фон и черные контуры остаются нетронутыми в обоих случаях.
     -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
         <defs>
@@ -465,12 +467,12 @@
                     0      0      0      1 0
                 "/>
             </filter>
-            <filter id="brand-yellow-filter" color-interpolation-filters="sRGB">
+            <filter id="brand-gray-filter" color-interpolation-filters="sRGB">
                 <feColorMatrix type="matrix" values="
-                   -0.190  1.190  0      0 0
-                    0.064  0.936  0      0 0
-                    1.397 -0.397  0      0 0
-                    0      0      0      1 0
+                    0.89  0.11  0      0 0
+                    0.89  0.11  0      0 0
+                    0.89  0.11  0      0 0
+                    0     0     0      1 0
                 "/>
             </filter>
         </defs>
@@ -530,7 +532,7 @@
                     </div>
                 </div>
 
-                <!-- Слайд 2: Удаленный доступ -->
+                <!-- Слайд 2: Удаленный доступ (Красный + Серый) -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Удаленный доступ к 1С через Интернет</h2>
@@ -546,7 +548,7 @@
                             src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" 
                             alt="" 
                             aria-hidden="true" 
-                            class="slider-image recolor-brand-yellow clip-right overlay"
+                            class="slider-image recolor-brand-gray clip-right overlay"
                         >
                     </div>
                 </div>
