@@ -119,15 +119,15 @@
 
         /* ===== Slider ===== */
         .hero-section {
-            padding: 30px 0;
+            padding: 5px 0 20px;
             width: 100%;
         }
 
         .slider-wrapper {
             position: relative;
             width: 100%;
-            max-width: none;
-            margin: 0;
+            max-width: 1200px;
+            margin: 0 auto;
             overflow: hidden;
             border-radius: 0;
             background-color: #ffffff;
@@ -143,33 +143,30 @@
         .slider-slide {
             min-width: 100%;
             display: grid;
-            grid-template-columns: 1.1fr 1.35fr;
+            grid-template-columns: 1fr 1fr;
             align-items: center;
-            /* Текст вплотную к картинке */
-            gap: 4px;
-            /* Сдвиг контента вправо: увеличен левый отступ, правый — умеренный */
-            padding: 28px 30px 28px 135px;
+            gap: 50px;
+            padding: 20px 100px 30px;
             background-color: #ffffff;
         }
 
         .slider-content {
             min-width: 0;
             text-align: left;
-            padding-left: 0;
         }
 
         .slider-content h2 {
-            font-size: 34px;
+            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 14px;
+            margin-bottom: 20px;
             color: var(--dark-text);
             line-height: 1.15;
         }
 
         .slider-content p {
-            font-size: 17px;
+            font-size: 18px;
             color: var(--gray-text);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .slider-image-container {
@@ -180,15 +177,17 @@
             align-items: center;
         }
 
-        /* Одинаковый размер картинок на всех слайдах */
         .slider-image {
             width: 100%;
-            height: 340px;
+            height: 420px;
             object-fit: contain;
+            object-position: center center;
             display: block;
             background-color: transparent;
             border: none;
             outline: none;
+            
+            mix-blend-mode: multiply; 
 
             opacity: 0;
             transform: translateY(14px) scale(0.98);
@@ -200,32 +199,63 @@
             transform: translateY(0) scale(1);
         }
 
-        /* «Живая» картинка маркировки */
         .mark-anim {
             animation: floatImage 4s ease-in-out infinite;
-            transform-origin: center;
+            transform-origin: center center;
             opacity: 1;
             transform: none;
-            transition: filter 0.3s ease;
             will-change: transform;
+            filter: brightness(1.1) contrast(1.1);
         }
 
-        .slider-slide.is-active .mark-anim {
-            filter: drop-shadow(0 14px 24px rgba(211, 47, 47, 0.18));
+        /* ===== Новые стили для перекраски GIF ===== */
+        .slider-image.recolor-red {
+            filter: hue-rotate(180deg) saturate(5);
         }
 
+        .slider-image.recolor-yellow {
+            filter: hue-rotate(-120deg) saturate(5);
+        }
+
+        .dual-recolor {
+            position: relative;
+        }
+
+        .dual-recolor .slider-image.overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .dual-recolor .slider-image {
+            object-position: center center;
+        }
+
+        .dual-recolor .clip-left {
+            clip-path: inset(0 50% 0 0);
+        }
+
+        .dual-recolor .clip-right {
+            clip-path: inset(0 0 0 49.9%);
+        }
+        /* ========================================= */
+
+        /* Увеличен масштаб (1.35), чтобы визуально "обрезать" пустые поля картинки */
         @keyframes floatImage {
-            0%   { transform: translateY(0)     rotate(0deg)    scale(1); }
-            25%  { transform: translateY(-6px)  rotate(-1deg)   scale(1.01); }
-            50%  { transform: translateY(-10px) rotate(0deg)    scale(1.015); }
-            75%  { transform: translateY(-6px)  rotate(1deg)    scale(1.01); }
-            100% { transform: translateY(0)     rotate(0deg)    scale(1); }
+            0%   { transform: translateY(0)     rotate(0deg)    scale(1.35); }
+            25%  { transform: translateY(-6px)  rotate(-1deg)   scale(1.36); }
+            50%  { transform: translateY(-10px) rotate(0deg)    scale(1.365); }
+            75%  { transform: translateY(-6px)  rotate(1deg)    scale(1.36); }
+            100% { transform: translateY(0)     rotate(0deg)    scale(1.35); }
         }
 
         /* ===== Dots ===== */
         .slider-dots {
             text-align: center;
-            margin-top: 14px;
+            margin-top: 5px;
             padding: 0 20px 4px;
             background-color: #ffffff;
         }
@@ -276,13 +306,13 @@
             transform: translateY(-50%) scale(1.08);
         }
 
-        .slider-btn-prev { left: 24px; }
-        .slider-btn-next { right: 24px; }
+        .slider-btn-prev { left: 0; }
+        .slider-btn-next { right: 0; }
 
         /* ===== Products ===== */
         .products-section {
             max-width: 1200px;
-            margin: 60px auto;
+            margin: 40px auto 60px;
             padding: 0 40px;
         }
 
@@ -350,30 +380,30 @@
         /* ===== Responsive ===== */
         @media (max-width: 1200px) {
             .slider-slide {
-                padding: 26px 22px 26px 110px;
-                grid-template-columns: 1.05fr 1.3fr;
-                gap: 4px;
+                padding: 20px 80px 30px;
+                gap: 40px;
             }
-            .slider-content h2 { font-size: 30px; }
-            .slider-content p { font-size: 16px; }
+            .slider-btn-prev { left: 10px; }
+            .slider-btn-next { right: 10px; }
+            
+            .slider-content h2 { font-size: 36px; }
+            .slider-content p { font-size: 17px; }
+            .slider-image { height: 360px; }
         }
 
         @media (max-width: 1024px) {
             .slider-slide {
                 grid-template-columns: 1fr;
-                padding: 32px 70px;
+                padding: 20px 80px 30px;
                 gap: 20px;
             }
             .slider-content {
                 text-align: center;
                 margin: 0 auto;
-                padding-left: 0;
             }
-            .slider-image {
-                height: 300px;
-            }
-            .slider-content h2 { font-size: 28px; }
-            .slider-content p { font-size: 16px; }
+            .slider-content h2 { font-size: 34px; }
+            .slider-content p { font-size: 17px; }
+            .slider-image { height: 320px; }
         }
 
         @media (max-width: 768px) {
@@ -395,18 +425,19 @@
                 text-align: center;
             }
             .slider-slide {
-                padding: 24px 56px;
+                padding: 15px 65px 25px; 
             }
-            .slider-content h2 { font-size: 24px; }
-            .slider-content p { font-size: 15px; }
-            .slider-image { height: 240px; }
+            .slider-content h2 { font-size: 28px; margin-bottom: 12px; }
+            .slider-content p { font-size: 16px; }
+            .slider-image { height: 260px; }
+
             .slider-btn {
                 width: 38px;
                 height: 38px;
                 font-size: 15px;
             }
-            .slider-btn-prev { left: 10px; }
-            .slider-btn-next { right: 10px; }
+            .slider-btn-prev { left: 5px; }
+            .slider-btn-next { right: 5px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -475,36 +506,50 @@
                     </div>
                 </div>
 
-                <!-- Слайд 2 -->
+                <!-- Слайд 2: Удаленный доступ (Красный + Желтый) -->
                 <div class="slider-slide">
                     <div class="slider-content">
                         <h2>Удаленный доступ к 1С через Интернет</h2>
                         <p>Облачное решение 1С для Вашего комфорта. Возможность удаленной работы 24/7. Дистанционное ведение бухгалтерского и налогового учета.</p>
                     </div>
-                    <div class="slider-image-container">
-                        <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" alt="Удаленный доступ" class="slider-image">
+                    <div class="slider-image-container dual-recolor">
+                        <img 
+                            src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" 
+                            alt="Удаленный доступ" 
+                            class="slider-image recolor-red clip-left"
+                        >
+                        <img 
+                            src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-remote-access-17675759.gif" 
+                            alt="" 
+                            aria-hidden="true" 
+                            class="slider-image recolor-yellow clip-right overlay"
+                        >
                     </div>
                 </div>
 
                 <!-- Слайд 3 -->
                 <div class="slider-slide">
                     <div class="slider-content">
-                        <h2>Внедрение и консалтинг</h2>
-                        <p>Профессиональная настройка программ 1С под специфику вашего бизнеса. Обучение сотрудников и сопровождение проекта на всех этапах.</p>
+                        <h2>Сопровождение 1С: от задач к решениям!</h2>
+                        <p>Внедряем и сопровождаем программы 1С. Работаем более 20 лет, опыт автоматизации различных направлений деятельности и более 200 сертификатов от фирмы 1С.</p>
                     </div>
                     <div class="slider-image-container">
                         <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-management-consulting-15401487.gif" alt="Консалтинг" class="slider-image">
                     </div>
                 </div>
 
-                <!-- Слайд 4 -->
+                <!-- Слайд 4: Электронный документооборот (Красный) -->
                 <div class="slider-slide">
                     <div class="slider-content">
-                        <h2>Электронный документооборот</h2>
-                        <p>Работа с электронными УПД, счетами-фактурами и другими документами. Автоматизация обмена с контрагентами и контролирующими органами.</p>
+                        <h2>Отчётность одним кликом</h2>
+                        <p>Сдача регламентированной отчетности в контролирующие органы напрямую из 1С: ФНС, СФР, Росстат, Росалкогольрегулирование и ФТС.</p>
                     </div>
                     <div class="slider-image-container">
-                        <img src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-document-6172540.gif" alt="Документы" class="slider-image">
+                        <img 
+                            src="https://github.com/DmitryGolokha/MegaKom/raw/main/free-animated-icon-document-6172540.gif" 
+                            alt="Документы" 
+                            class="slider-image recolor-red"
+                        >
                     </div>
                 </div>
             </div>
